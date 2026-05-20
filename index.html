@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>J.A.R.V.I.S — Just A Rather Very Intelligent System</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- BOOT SCREEN -->
+<div id="boot-screen">
+  <div class="boot-logo">
+    <svg viewBox="0 0 200 200" class="arc-reactor-boot">
+      <circle cx="100" cy="100" r="90" class="ring r1"/>
+      <circle cx="100" cy="100" r="70" class="ring r2"/>
+      <circle cx="100" cy="100" r="50" class="ring r3"/>
+      <circle cx="100" cy="100" r="30" class="ring r4"/>
+      <circle cx="100" cy="100" r="15" class="core"/>
+      <polygon points="100,75 115,110 85,110" class="tri"/>
+    </svg>
+  </div>
+  <div class="boot-text">
+    <div class="boot-line" id="bl1">INITIALIZING J.A.R.V.I.S...</div>
+    <div class="boot-line" id="bl2">LOADING NEURAL NETWORKS...</div>
+    <div class="boot-line" id="bl3">CONNECTING AI SYSTEMS...</div>
+    <div class="boot-line" id="bl4">CALIBRATING VOICE MODULE...</div>
+    <div class="boot-line" id="bl5">SYSTEM ONLINE ✓</div>
+  </div>
+</div>
+
+<!-- MAIN INTERFACE -->
+<div id="main-ui" style="display:none">
+
+  <!-- TOP HUD BAR -->
+  <div class="hud-top">
+    <div class="hud-left">
+      <span class="hud-label">SYS</span>
+      <span class="status-dot online"></span>
+      <span class="hud-value" id="sys-time">--:--:--</span>
+    </div>
+    <div class="hud-center-title">
+      <span class="title-j">J</span><span class="title-dot">.</span><span class="title-a">A</span><span class="title-dot">.</span><span class="title-r">R</span><span class="title-dot">.</span><span class="title-v">V</span><span class="title-dot">.</span><span class="title-i">I</span><span class="title-dot">.</span><span class="title-s">S</span>
+    </div>
+    <div class="hud-right">
+      <span class="hud-value" id="ai-status">GEMINI PRIME</span>
+      <span class="status-dot online"></span>
+      <span class="hud-label">AI</span>
+    </div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="main-grid">
+
+    <!-- LEFT PANEL -->
+    <div class="panel left-panel">
+
+      <!-- USER PROFILE -->
+      <div class="card profile-card">
+        <div class="card-header">OPERATOR PROFILE</div>
+        <div class="profile-avatar">
+          <svg viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="38" class="avatar-ring"/>
+            <circle cx="40" cy="30" r="14" class="avatar-head"/>
+            <ellipse cx="40" cy="65" rx="22" ry="16" class="avatar-body"/>
+          </svg>
+          <div class="avatar-glow"></div>
+        </div>
+        <div class="profile-name" id="user-name">OPERATOR</div>
+        <div class="profile-info" id="user-info">Click to set your name</div>
+        <button class="hud-btn small" onclick="setUserProfile()">⚙ CONFIGURE</button>
+      </div>
+
+      <!-- WEATHER WIDGET -->
+      <div class="card weather-card">
+        <div class="card-header">ENVIRONMENT SCAN</div>
+        <div class="weather-main">
+          <div class="weather-icon" id="weather-icon">🌡</div>
+          <div class="weather-temp" id="weather-temp">--°C</div>
+        </div>
+        <div class="weather-desc" id="weather-desc">Fetching weather...</div>
+        <div class="weather-details">
+          <div class="wd"><span>💧</span><span id="humidity">--%</span></div>
+          <div class="wd"><span>💨</span><span id="wind">-- km/h</span></div>
+          <div class="wd"><span>📍</span><span id="location-name">--</span></div>
+        </div>
+        <button class="hud-btn small" onclick="fetchWeather()">↻ REFRESH</button>
+      </div>
+
+      <!-- NEWS TICKER -->
+      <div class="card news-card">
+        <div class="card-header">INTEL FEED</div>
+        <div class="news-list" id="news-list">
+          <div class="news-item loading">Fetching latest intel...</div>
+        </div>
+        <button class="hud-btn small" onclick="fetchNews()">↻ UPDATE</button>
+      </div>
+
+    </div>
+
+    <!-- CENTER PANEL - MAIN CHAT -->
+    <div class="panel center-panel">
+
+      <!-- ARC REACTOR -->
+      <div class="arc-reactor-container">
+        <svg viewBox="0 0 160 160" class="arc-reactor" id="arc-reactor">
+          <circle cx="80" cy="80" r="75" class="ring r1"/>
+          <circle cx="80" cy="80" r="58" class="ring r2"/>
+          <circle cx="80" cy="80" r="42" class="ring r3"/>
+          <circle cx="80" cy="80" r="26" class="ring r4"/>
+          <circle cx="80" cy="80" r="12" class="core" id="arc-core"/>
+          <polygon points="80,55 96,88 64,88" class="tri" id="arc-tri"/>
+        </svg>
+        <div class="waveform" id="waveform">
+          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+          <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+        </div>
+      </div>
+
+      <!-- CHAT MESSAGES -->
+      <div class="chat-area" id="chat-area">
+        <div class="msg jarvis">
+          <div class="msg-label">J.A.R.V.I.S</div>
+          <div class="msg-text">Good day, Operator. All systems are online. I am running on multiple AI cores — Gemini Prime, Groq Turbo, and Mistral. How may I assist you today?</div>
+        </div>
+      </div>
+
+      <!-- AI SELECTOR -->
+      <div class="ai-selector">
+        <span class="ai-label">AI CORE:</span>
+        <button class="ai-btn active" data-ai="auto" onclick="selectAI(this)">⚡ AUTO</button>
+        <button class="ai-btn" data-ai="gemini" onclick="selectAI(this)">🔵 GEMINI</button>
+        <button class="ai-btn" data-ai="groq" onclick="selectAI(this)">🟢 GROQ</button>
+        <button class="ai-btn" data-ai="mistral" onclick="selectAI(this)">🟣 MISTRAL</button>
+      </div>
+
+      <!-- INPUT AREA -->
+      <div class="input-area">
+        <textarea id="user-input" placeholder="Speak or type your command, Operator..." rows="2"></textarea>
+        <div class="input-btns">
+          <button class="hud-btn icon" id="voice-btn" onclick="toggleVoice()" title="Voice Input">🎙</button>
+          <button class="hud-btn icon" id="screen-btn" onclick="captureScreen()" title="Screen Capture">📸</button>
+          <button class="hud-btn send" onclick="sendMessage()">EXECUTE ▶</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel right-panel">
+
+      <!-- MEMORY BANK -->
+      <div class="card memory-card">
+        <div class="card-header">MEMORY CORE</div>
+        <div class="memory-list" id="memory-list">
+          <div class="memory-item empty">No memories stored yet</div>
+        </div>
+        <div class="memory-input">
+          <input type="text" id="memory-input" placeholder="Store memory..." />
+          <button class="hud-btn small" onclick="addMemory()">+ ADD</button>
+        </div>
+      </div>
+
+      <!-- TASK MANAGER -->
+      <div class="card task-card">
+        <div class="card-header">MISSION LOG</div>
+        <div class="task-list" id="task-list">
+          <div class="task-item empty">No active missions</div>
+        </div>
+        <div class="task-input">
+          <input type="text" id="task-input" placeholder="New mission..." />
+          <button class="hud-btn small" onclick="addTask()">+ ADD</button>
+        </div>
+      </div>
+
+      <!-- SYSTEM STATS -->
+      <div class="card stats-card">
+        <div class="card-header">SYSTEM METRICS</div>
+        <div class="stat-row">
+          <span>AI Queries</span>
+          <span class="stat-val" id="stat-queries">0</span>
+        </div>
+        <div class="stat-row">
+          <span>Memories Stored</span>
+          <span class="stat-val" id="stat-memories">0</span>
+        </div>
+        <div class="stat-row">
+          <span>Tasks Active</span>
+          <span class="stat-val" id="stat-tasks">0</span>
+        </div>
+        <div class="stat-row">
+          <span>Active AI Core</span>
+          <span class="stat-val" id="stat-ai">AUTO</span>
+        </div>
+        <div class="stat-row">
+          <span>Voice Mode</span>
+          <span class="stat-val" id="stat-voice">OFF</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BOTTOM HUD -->
+  <div class="hud-bottom">
+    <div class="hud-ticker" id="status-ticker">JARVIS SYSTEMS NOMINAL — ALL AI CORES ONLINE — READY FOR COMMANDS</div>
+  </div>
+
+</div>
+
+<!-- SETTINGS MODAL -->
+<div id="settings-modal" class="modal" style="display:none">
+  <div class="modal-box">
+    <div class="modal-title">⚙ OPERATOR CONFIGURATION</div>
+
+    <label>Your Name</label>
+    <input type="text" id="cfg-name" placeholder="Enter your name" />
+
+    <label>City (for Weather)</label>
+    <input type="text" id="cfg-city" placeholder="e.g. Mumbai, Delhi, Varanasi" />
+
+    <label>Gemini API Key</label>
+    <input type="password" id="cfg-gemini" placeholder="AIza..." />
+
+    <label>Groq API Key (Free at groq.com)</label>
+    <input type="password" id="cfg-groq" placeholder="gsk_..." />
+
+    <label>Mistral API Key (Free at mistral.ai)</label>
+    <input type="password" id="cfg-mistral" placeholder="..." />
+
+    <label>OpenWeather API Key (Free)</label>
+    <input type="password" id="cfg-weather" placeholder="Weather API key" />
+
+    <label>NewsAPI Key (Free at newsapi.org)</label>
+    <input type="password" id="cfg-news" placeholder="News API key" />
+
+    <label>Jarvis Voice</label>
+    <select id="cfg-voice">
+      <option value="">Loading voices...</option>
+    </select>
+
+    <div class="modal-btns">
+      <button class="hud-btn" onclick="saveConfig()">💾 SAVE & INITIALIZE</button>
+      <button class="hud-btn danger" onclick="closeModal()">✕ CANCEL</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN PREVIEW MODAL -->
+<div id="screen-modal" class="modal" style="display:none">
+  <div class="modal-box wide">
+    <div class="modal-title">📸 SCREEN ANALYSIS</div>
+    <canvas id="screen-canvas"></canvas>
+    <div id="screen-analysis" class="screen-analysis">Analyzing screen...</div>
+    <div class="modal-btns">
+      <button class="hud-btn" onclick="analyzeScreen()">🔍 ANALYZE WITH AI</button>
+      <button class="hud-btn danger" onclick="closeScreenModal()">✕ CLOSE</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/memory.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/voice.js"></script>
+<script src="js/weather.js"></script>
+<script src="js/news.js"></script>
+<script src="js/tasks.js"></script>
+<script src="js/screen.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
